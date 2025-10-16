@@ -26,6 +26,7 @@ export const appRouter = createBrowserRouter([
         element: <HomePage />,
       },
       {
+        //TODO Pending for implement
         path: 'product/:idSlug',
         element: <ProductPage />,
       },
