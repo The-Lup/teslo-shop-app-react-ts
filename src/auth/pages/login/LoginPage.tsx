@@ -1,17 +1,45 @@
-import { Link } from 'react-router-dom';
+import { useState, type FormEvent } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { toast } from 'sonner';
+
 import { CustomLogo } from '@/components/ui/custom/CustomLogo';
+import { loginAction } from '@/auth/actions/login.action';
 
 export const LoginPage = () => {
+  const navigate = useNavigate();
+  const [isPosting, setIsPosting] = useState(false);
+
+  const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsPosting(true);
+
+    const formData = new FormData(e.target as HTMLFormElement);
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
+
+    try {
+      const data = await loginAction(email, password);
+      localStorage.setItem('token', data.token);
+      console.log('Redirecting to home');
+      navigate('/');
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      toast.error('Invalid email or password');
+    }
+
+    setIsPosting(false);
+  };
+
   return (
     <div className={'flex flex-col gap-6'}>
       <Card className="overflow-hidden p-0">
         <CardContent className="grid p-0 md:grid-cols-2">
-          <form className="p-6 md:p-8">
+          <form className="p-6 md:p-8" onSubmit={handleLogin}>
             <div className="flex flex-col gap-6">
               <div className="flex flex-col items-center text-center">
                 <CustomLogo />
@@ -24,6 +52,7 @@ export const LoginPage = () => {
                 <Input
                   id="email"
                   type="email"
+                  name="email"
                   placeholder="Mail@mail.com"
                   required
                 />
@@ -43,11 +72,12 @@ export const LoginPage = () => {
                 <Input
                   id="password"
                   type="password"
+                  name="password"
                   required
                   placeholder="Password"
                 />
               </div>
-              <Button type="submit" className="w-full">
+              <Button type="submit" className="w-full" disabled={isPosting}>
                 Login
               </Button>
               <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
