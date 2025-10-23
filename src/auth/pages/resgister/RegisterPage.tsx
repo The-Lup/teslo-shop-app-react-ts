@@ -1,17 +1,75 @@
-import { Link } from 'react-router-dom';
+import { type FormEvent, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuthStore } from '@/auth/store/auth.store';
+import { AxiosError } from 'axios';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { CustomLogo } from '@/components/ui/custom/CustomLogo';
+import type { BackendError } from '@/auth/interfaces/BankendError';
 
 export const RegisterPage = () => {
+  const navigate = useNavigate();
+  // Get the register action from the store
+  const register = useAuthStore((state) => state.register);
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setIsLoading(true);
+    setError(null);
+
+    const formData = new FormData(event.target as HTMLFormElement);
+
+    const fullName = formData.get('fullName') as string;
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
+    const confirmPassword = formData.get('confirmPassword') as string;
+
+    // Client-side password validation
+    if (password !== confirmPassword) {
+      setError('The passwords do not match.');
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      // Call the registration action
+      const success = await register(fullName, email, password);
+
+      if (success) {
+        navigate('/');
+      }
+    } catch (err) {
+      const axiosError = err as AxiosError<BackendError>;
+      const errorData = axiosError.response?.data;
+      let errorMessage =
+        'Unknown error during registration. Please check your connection.';
+
+      if (errorData?.message) {
+        if (Array.isArray(errorData.message)) {
+          errorMessage = errorData.message.join(' | ');
+        } else {
+          errorMessage = errorData.message;
+        }
+      }
+
+      setError(errorMessage);
+      localStorage.removeItem('token');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className={'flex flex-col gap-6'}>
       <Card className="overflow-hidden p-0">
         <CardContent className="grid p-0 md:grid-cols-2">
-          <form className="p-6 md:p-8">
+          <form className="p-6 md:p-8" onSubmit={handleSubmit}>
             <div className="flex flex-col gap-6">
               <div className="flex flex-col items-center text-center">
                 <CustomLogo />
@@ -20,48 +78,64 @@ export const RegisterPage = () => {
                 </p>
               </div>
 
+              {/* Error message display */}
+              {error && (
+                <div className="text-red-600 border border-red-300 p-3 rounded-lg bg-red-50 text-sm">
+                  {error}
+                </div>
+              )}
+
+              {/* Input Full Name */}
               <div className="grid gap-2">
-                <Label htmlFor="name">Full Name</Label>
+                <Label htmlFor="fullName">Full Name</Label>
                 <Input
-                  id="name"
+                  id="fullName"
+                  name="fullName"
                   type="text"
                   placeholder="Heimdall Reed"
                   required
                 />
               </div>
 
+              {/* Input Email */}
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
                   id="email"
+                  name="email"
                   type="email"
                   placeholder="mail@example.com"
                   required
                 />
               </div>
 
+              {/* Input Password */}
               <div className="grid gap-2">
                 <Label htmlFor="password">Password</Label>
                 <Input
                   id="password"
+                  name="password"
                   type="password"
                   required
                   placeholder="Enter your password"
                 />
               </div>
 
+              {/* Input Confirm Password */}
               <div className="grid gap-2">
-                <Label htmlFor="confirm-password">Confirm Password</Label>
+                <Label htmlFor="confirmPassword">Confirm Password</Label>
                 <Input
-                  id="confirm-password"
+                  id="confirmPassword"
+                  name="confirmPassword"
                   type="password"
                   required
                   placeholder="Re-enter your password"
                 />
               </div>
 
-              <Button type="submit" className="w-full">
-                Create Account
+              {/* Submit Button */}
+              <Button type="submit" className="w-full" disabled={isLoading}>
+                {isLoading ? 'Creating Account...' : 'Create Account'}
               </Button>
 
               <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
@@ -71,6 +145,7 @@ export const RegisterPage = () => {
               </div>
 
               <div className="grid grid-cols-3 gap-4">
+                {/* Social login buttons... */}
                 <Button variant="outline" className="w-full">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <path

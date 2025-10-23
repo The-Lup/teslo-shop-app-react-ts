@@ -8,10 +8,12 @@ import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 
 import { CustomLogo } from '@/components/ui/custom/CustomLogo';
-import { loginAction } from '@/auth/actions/login.action';
+
+import { useAuthStore } from '@/auth/store/auth.store';
 
 export const LoginPage = () => {
   const navigate = useNavigate();
+  const { login } = useAuthStore();
   const [isPosting, setIsPosting] = useState(false);
 
   const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
@@ -22,16 +24,13 @@ export const LoginPage = () => {
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
 
-    try {
-      const data = await loginAction(email, password);
-      localStorage.setItem('token', data.token);
-      console.log('Redirecting to home');
+    const validLogin = await login(email, password);
+    if (validLogin) {
       navigate('/');
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error) {
-      toast.error('Invalid email or password');
+      return;
     }
 
+    toast.error('Invalid email or password');
     setIsPosting(false);
   };
 

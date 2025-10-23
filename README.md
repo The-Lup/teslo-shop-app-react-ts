@@ -5,3 +5,5 @@
 3. Clone the backend repo
 4. npm i
 5. npm run start:dev (on backend)
+
+#tecnologias usadas: Zustand, axios, docker, tanstack query
