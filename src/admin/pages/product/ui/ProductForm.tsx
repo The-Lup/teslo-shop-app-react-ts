@@ -34,6 +34,7 @@ export const ProductForm = ({ title, subTitle, product }: Props) => {
 
   const selectedSizes = watch('sizes');
   const selectedTags = watch('tags');
+  const currentStock = watch('stock');
 
   const addTag = () => {
     const newTag = labelInputRef.current!.value;
@@ -443,16 +444,16 @@ export const ProductForm = ({ title, subTitle, product }: Props) => {
                   </span>
                   <span
                     className={`px-2 py-1 text-xs font-medium rounded-full ${
-                      product.stock > 5
+                      currentStock > 5
                         ? 'bg-green-100 text-green-800'
-                        : product.stock > 0
+                        : currentStock > 0
                         ? 'bg-yellow-100 text-yellow-800'
                         : 'bg-red-100 text-red-800'
                     }`}
                   >
-                    {product.stock > 5
+                    {currentStock > 5
                       ? 'In stock'
-                      : product.stock > 0
+                      : currentStock > 0
                       ? 'Low stock'
                       : 'Out of stock'}
                   </span>
@@ -472,7 +473,7 @@ export const ProductForm = ({ title, subTitle, product }: Props) => {
                     Available Sizes
                   </span>
                   <span className="text-sm text-slate-600">
-                    {product.sizes.length} sizes
+                    {selectedSizes.length} sizes
                   </span>
                 </div>
               </div>
