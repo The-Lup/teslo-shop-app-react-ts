@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { AdminTitle } from '@/admin/components/AdminTitle';
 
 import { useForm } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
 import type { Product, Size } from '@/interfaces/product.interface';
-import { X, SaveAll, Tag, Upload } from 'lucide-react';
+import { X, SaveAll, Tag, Upload, Plus } from 'lucide-react';
 import { Link } from 'react-router';
 import { cn } from '@/lib/utils';
 
@@ -30,22 +30,25 @@ export const ProductForm = ({ title, subTitle, product }: Props) => {
     defaultValues: product,
   });
 
+  const labelInputRef = useRef<HTMLInputElement>(null);
+
   const selectedSizes = watch('sizes');
+  const selectedTags = watch('tags');
 
   const addTag = () => {
-    // if (newTag.trim() && !product.tags.includes(newTag.trim())) {
-    // setProduct((prev) => ({
-    //   ...prev,
-    //   tags: [...prev.tags, newTag.trim()],
-    // }));
-    // }
+    const newTag = labelInputRef.current!.value;
+
+    if (newTag === '') return;
+
+    const newTagSet = new Set(getValues('tags'));
+    newTagSet.add(newTag);
+    setValue('tags', Array.from(newTagSet));
   };
 
-  const removeTag = (tagToRemove: string) => {
-    // setProduct((prev) => ({
-    //   ...prev,
-    //   tags: prev.tags.filter((tag) => tag !== tagToRemove),
-    // }));
+  const removeTag = (tag: string) => {
+    const newTagSet = new Set(getValues('tags'));
+    newTagSet.delete(tag);
+    setValue('tags', Array.from(newTagSet));
   };
 
   const addSize = (size: Size) => {
@@ -311,7 +314,7 @@ export const ProductForm = ({ title, subTitle, product }: Props) => {
 
               <div className="space-y-4">
                 <div className="flex flex-wrap gap-2">
-                  {product.tags.map((tag) => (
+                  {selectedTags.map((tag) => (
                     <span
                       key={tag}
                       className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800 border border-green-200"
@@ -319,7 +322,7 @@ export const ProductForm = ({ title, subTitle, product }: Props) => {
                       <Tag className="h-3 w-3 mr-1" />
                       {tag}
                       <button
-                        // onClick={() => removeTag(tag)}
+                        onClick={() => removeTag(tag)}
                         className="ml-2 text-green-600 hover:text-green-800 transition-colors duration-200"
                       >
                         <X className="h-3 w-3" />
@@ -330,24 +333,21 @@ export const ProductForm = ({ title, subTitle, product }: Props) => {
 
                 <div className="flex gap-2">
                   <input
+                    ref={labelInputRef}
                     type="text"
-                    // value={newTag}
-                    // onChange={(e) => setNewTag(e.target.value)}
-                    // onKeyDown={(e) => e.key === 'Enter' && addTag()}
-
                     onKeyDown={(e) => {
                       if (e.key === 'Enter' || e.key === ' ' || e.key === ',') {
-                        //TODO NEED CODE to add tag
+                        e.preventDefault();
                         addTag();
+                        labelInputRef.current!.value = '';
                       }
                     }}
                     placeholder="Add new tag..."
                     className="flex-1 px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                   />
-                  {/* TODO: */}
-                  {/* <Button onClick={addTag} className="px-4 py-2rounded-lg ">
-                    <Plus className="h-4 w-4" />
-                  </Button> */}
+                  <Button onClick={addTag} className="px-4 py-2rounded-lg ">
+                    <Plus className="h-4 w-4" />
+                  </Button>
                 </div>
               </div>
             </div>
