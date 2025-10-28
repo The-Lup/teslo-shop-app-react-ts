@@ -1,5 +1,8 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { getProductByIdAction } from '../actions/get-product-by-id.action';
+
+import { createUpdateProductAction } from '../actions/create-update-product.action';
+import type { Product } from '@/interfaces/product.interface';
 
 export const useProduct = (id: string) => {
   const query = useQuery({
@@ -9,9 +12,15 @@ export const useProduct = (id: string) => {
     staleTime: 1000 * 60 * 5, //5 mins
   });
 
-  //TODO mutations
+  const mutation = useMutation({
+    mutationFn: createUpdateProductAction,
+    onSuccess: (product: Product) => {
+      console.log('All good', product);
+    },
+  });
 
   return {
     ...query,
+    mutation,
   };
 };

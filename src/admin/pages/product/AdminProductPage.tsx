@@ -1,33 +1,38 @@
-import { Navigate, useParams } from 'react-router';
+import { Navigate, useNavigate, useParams } from 'react-router';
 
+import { toast } from 'sonner';
 import { useProduct } from '@/admin/hooks/useProduct';
 import { CustomFullSCLoading } from '@/components/ui/custom/CustomFullSCLoading';
 
 import { ProductForm } from './ui/ProductForm';
-
-interface Product {
-  id: string;
-  title: string;
-  price: number;
-  description: string;
-  slug: string;
-  stock: number;
-  sizes: string[];
-  gender: string;
-  tags: string[];
-  images: string[];
-}
+import type { Product } from '@/interfaces/product.interface';
 
 export const AdminProductPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
 
-  const { isLoading, isError, data: product } = useProduct(id || '');
+  const { isLoading, isError, data: product, mutation } = useProduct(id || '');
 
   const title = id === 'new' ? 'New Product' : 'Edit Product';
   const subTitle =
     id === 'new'
       ? 'Here you can create a new product.'
       : 'Here you can edit the product.';
+
+  const handleSubmit = async (productLike: Partial<Product>) => {
+    await mutation.mutateAsync(productLike, {
+      onSuccess: (data) => {
+        toast.success('Product updated successfully.', {
+          position: 'top-right',
+        });
+        navigate(`/admin/products/${data.id}`);
+      },
+      onError: (error) => {
+        console.log(error);
+        toast.error('Error updating product.');
+      },
+    });
+  };
 
   if (isError) {
     return <Navigate to="/admin/products" />;
@@ -41,5 +46,12 @@ export const AdminProductPage = () => {
     return <Navigate to="/admin/products" />;
   }
 
-  return <ProductForm title={title} subTitle={subTitle} product={product} />;
+  return (
+    <ProductForm
+      title={title}
+      subTitle={subTitle}
+      product={product}
+      onSubmit={handleSubmit}
+    />
+  );
 };
