@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AdminTitle } from '@/admin/components/AdminTitle';
 
 import { useForm } from 'react-hook-form';
@@ -15,10 +15,16 @@ interface Props {
   product: Product;
   isPending: boolean;
 
-  onSubmit: (productLike: Partial<Product>) => Promise<void>;
+  onSubmit: (
+    productLike: Partial<Product> & { files?: File[] }
+  ) => Promise<void>;
 }
 
 const availableSizes: Size[] = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+
+interface FormInputs extends Product {
+  files?: File[];
+}
 
 export const ProductForm = ({
   title,
@@ -35,12 +41,15 @@ export const ProductForm = ({
     getValues,
     setValue,
     watch,
-  } = useForm({
+  } = useForm<FormInputs>({
     defaultValues: product,
   });
 
   const labelInputRef = useRef<HTMLInputElement>(null);
   const [files, setFiles] = useState<File[]>([]);
+  useEffect(() => {
+    setFiles([]);
+  }, [product]);
 
   const selectedSizes = watch('sizes');
   const selectedTags = watch('tags');
@@ -93,6 +102,8 @@ export const ProductForm = ({
     if (!files) return;
 
     setFiles((prev) => [...prev, ...Array.from(files)]);
+    const currenFiles = getValues('files') || [];
+    setValue('files', [...currenFiles, ...Array.from(files)]);
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -102,6 +113,8 @@ export const ProductForm = ({
     setFiles(Array.from(files));
 
     setFiles((prev) => [...prev, ...Array.from(files)]);
+    const currenFiles = getValues('files') || [];
+    setValue('files', [...currenFiles, ...Array.from(files)]);
   };
 
   return (
