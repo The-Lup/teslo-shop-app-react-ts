@@ -40,8 +40,9 @@ The backend for this project is built using **NestJS**, a scalable Node.js frame
 
 ### Database & Deployment
 
-- 🐘 **PostgreSQL 14** hosted on **Neon Tech**
-- 🌐 **Render** — Deployment platform for the backend services
+- 🐘 PostgreSQL 14 hosted on Neon Tech for high-performance, scalable database management
+- ⚙️ Backend deployed on Render using NestJS
+- 🌐 Frontend deployed on Netlify, ensuring fast, globally distributed content delivery
 
 ---
 
