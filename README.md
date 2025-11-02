@@ -1,9 +1,139 @@
-#TesloShop
+# 🛍️ Teslo Shop - React + TypeScript
 
-1. Clone the repo
-2. Rename env.template file to .env
-3. Clone the backend repo
-4. npm i
-5. npm run start:dev (on backend)
+A modern e-commerce web application built with **React**, **TypeScript**, and **Vite**, inspired by the Teslo Shop concept.  
+This project focuses on performance, clean architecture, and an elegant UI powered by **shadcn/ui** components, **TanStack Query**, **Zustand**, and **Axios**.
 
-#tecnologias usadas: Zustand, axios, docker, tanstack query
+---
+
+## 🚀 Live Demo
+
+_Coming soon..._
+
+---
+
+## 🧠 Tech Stack
+
+### Frontend
+
+- ⚛️ **React** — Frontend library for building interactive UIs
+- 💙 **TypeScript** — Type-safe JavaScript for scalability and maintainability
+- ⚡ **Vite** — Fast development and build tool
+- 🔄 **TanStack Query** — Data synchronization and server state management
+- 🪣 **Zustand** — Lightweight global state management
+- 🌐 **Axios** — Promise-based HTTP client for API requests
+- 🎨 **shadcn/ui** — Modern, accessible UI components built with TailwindCSS
+
+### Backend
+
+The backend for this project is built using **NestJS**, a scalable Node.js framework.  
+🔗 **Backend Repository:** [nest-backend-tesloshop](https://github.com/The-Lup/nest-backend-tesloshop)
+
+### Database & Deployment
+
+- 🐘 **PostgreSQL 14** hosted on **Neon Tech**
+- 🌐 **Render** — Deployment platform for the backend services
+
+---
+
+## 🧩 Features
+
+- 🛒 **Product listing with dynamic fetching** — Products are retrieved from the backend using Axios and TanStack Query for optimized state management.
+- 👤 **User authentication & authorization** — Role-based access control (admin and regular user).
+- 🧰 **Admin product management** — Admin users can create, edit, and delete products.
+- 🔍 **Product search and filtering** — Non-admin users can search products by name, size, and price.
+- ⚡ **Real-time server state updates** — Smooth and efficient data synchronization using TanStack Query and Zustand.
+- 🎨 **Clean and responsive UI design** — Built with shadcn/ui and TailwindCSS for a modern and elegant interface.
+
+---
+
+## 🛠️ Installation & Setup
+
+### Prerequisites
+
+- Node.js v18+
+- npm or yarn
+
+### Steps
+
+1. **Clone the repository**
+
+   ```bash
+   git clone https://github.com/The-Lup/teslo-shop-app-react-ts.git
+   cd teslo-shop-app-react-ts
+   ```
+
+2. **Install dependencies**
+
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
+
+3. **Configure environment variables**
+   Create a `.env` file based on the provided `.env.template` and add the backend API URL:
+
+   ```
+   VITE_API_URL=https://your-backend-api.onrender.com
+   ```
+
+4. **Run the app**
+
+   ```bash
+   npm run dev
+   ```
+
+5. **Build for production**
+   ```bash
+   npm run build
+   ```
+
+---
+
+## 📁 Project Structure
+
+```
+teslo-shop-app-react-ts/
+├── public/                 # Static assets
+├── src/
+│   ├── admin/              # Admin dashboard and management pages
+│   ├── api/                # API services and requests (Axios)
+│   ├── assets/             # Images and static resources
+│   ├── auth/               # Authentication and user context
+│   ├── components/         # Reusable UI components
+│   ├── interfaces/         # TypeScript interfaces and types
+│   ├── lib/                # Configuration and utility libraries
+│   ├── mocks/              # Mock data for development/testing
+│   ├── shop/               # Main e-commerce pages and logic
+│   ├── app.router.tsx      # Application routing setup
+│   ├── main.tsx            # App entry point
+│   ├── TesloShopApp.tsx    # Root app component
+│   └── index.css           # Global styles
+├── .env.template            # Environment variable example
+├── package.json
+├── tsconfig.json
+├── vite.config.ts
+└── README.md
+```
+
+---
+
+## 🧪 Future Improvements
+
+- ✅ Integrate payment gateway (e.g., Stripe)
+- ✅ Add product reviews and ratings
+- ✅ Implement admin dashboard analytics
+- ✅ Improve SEO and performance metrics
+
+---
+
+## 🧑‍💻 Author
+
+**Lu P.**  
+🌐 GitHub: [@The-Lup](https://github.com/The-Lup)
+
+---
+
+## 📜 License
+
+This project is open source and available under the [MIT License](LICENSE).
