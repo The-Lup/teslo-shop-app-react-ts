@@ -25,6 +25,7 @@ This project focuses on performance, clean architecture, and an elegant UI power
 - 🔄 **TanStack Query** — Data synchronization and server state management
 - 🪣 **Zustand** — Lightweight global state management
 - 🌐 **Axios** — Promise-based HTTP client for API requests
+- 🧾 **React Hook Form** — Form management using `useForm` for efficient validation and performance
 - 🎨 **shadcn/ui** — Modern, accessible UI components built with TailwindCSS
 
 ### Backend
