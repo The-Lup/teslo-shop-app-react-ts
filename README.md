@@ -48,7 +48,12 @@ The backend for this project is built using **NestJS**, a scalable Node.js frame
 ## 🧩 Features
 
 - 🛒 **Product listing with dynamic fetching** — Products are retrieved from the backend using Axios and TanStack Query for optimized state management.
-- 👤 **User authentication & authorization** — Role-based access control (admin and regular user).
+- 👤 **User Authentication & Authorization** — 
+  Users can register, log in, and access features based on their role:
+  - **Admin users** can create, edit, and delete products.
+  - **Regular users** can browse and search products by name, size, and price.
+    
+  Authentication is managed through secure session handling and role-based access control.
 - 🧰 **Admin product management** — Admin users can create, edit, and delete products.
 - 🔍 **Product search and filtering** — Non-admin users can search products by name, size, and price.
 - ⚡ **Real-time server state updates** — Smooth and efficient data synchronization using TanStack Query and Zustand.
