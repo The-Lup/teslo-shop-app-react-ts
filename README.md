@@ -134,7 +134,7 @@ teslo-shop-app-react-ts/
 
 ## 🧑‍💻 Author
 
-**Lu P.**  
+**The-Lup**  
 🌐 GitHub: [@The-Lup](https://github.com/The-Lup)
 
 ---
