@@ -5,7 +5,7 @@ This project focuses on performance, clean architecture, and an elegant UI power
 
 ---
 
-## 🚀 Live Demo
+## 🚀 Screenshots
 
 <img width="1614" height="915" alt="{CECC2D39-A3DA-4F9B-B128-E224319DCFE3}" src="https://github.com/user-attachments/assets/a2c860db-7ec3-4c52-a3c0-3ccaf00703e3" />
 <img width="1501" height="917" alt="{55C4BB13-B98C-4B47-B40A-FD31B3CEA475}" src="https://github.com/user-attachments/assets/fdf9ef12-6267-4485-b3f5-36c69d19fac9" />
